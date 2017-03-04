@@ -174,6 +174,8 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
      * @return The depth of the node.
      */
     public int getDepthInTree() {
+        
+        if (mNodeInfo == null) return 0;
 
         int result = 0;
 
@@ -188,6 +190,8 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
     }
 
     public A11yNodeInfo getParent() {
+        if (mNodeInfo == null) return null;
+
         return new A11yNodeInfo(mNodeInfo.getParent());
     }
 
