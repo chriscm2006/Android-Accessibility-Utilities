@@ -19,6 +19,14 @@ import java.util.List;
 
 public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
 
+    public static A11yNodeInfo wrap(AccessibilityNodeInfo node) {
+        return new A11yNodeInfo(node);
+    }
+
+    public static A11yNodeInfo wrap(AccessibilityNodeInfoCompat node) {
+        return new A11yNodeInfo(node);
+    }
+
     private static final ArrayList<Class<? extends View>> ACTIVE_CLASSES;
 
     static {
