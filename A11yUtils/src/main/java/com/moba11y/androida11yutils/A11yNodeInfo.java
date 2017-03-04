@@ -71,8 +71,7 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
     }
 
     public A11yNodeInfo(AccessibilityNodeInfo nodeInfo) {
-        if (nodeInfo == null) throw new RuntimeException("Wrapping a null node doesn't make sense.");
-        else mNodeInfo = new AccessibilityNodeInfoCompat(nodeInfo);
+        this(new AccessibilityNodeInfoCompat(nodeInfo));
     }
 
     public A11yNodeInfo(AccessibilityNodeInfoCompat nodeInfoCompat) {
