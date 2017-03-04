@@ -1,7 +1,6 @@
 package com.moba11y.androida11yutils;
 
 import android.view.View;
-import android.view.accessibility.AccessibilityNodeInfo;
 
 import java.util.ArrayList;
 

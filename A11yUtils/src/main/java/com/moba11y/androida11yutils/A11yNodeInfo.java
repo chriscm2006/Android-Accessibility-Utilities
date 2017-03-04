@@ -190,6 +190,8 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
     }
 
     public A11yNodeInfo getParent() {
+        if (mNodeInfo.getParent() == null) return null;
+
         return new A11yNodeInfo(mNodeInfo.getParent());
     }
 
@@ -233,7 +235,7 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
             public boolean onVisit(A11yNodeInfo nodeInfo) {
 
                 for (int i = 0; i < nodeInfo.getDepthInTree(); i++) {
-                    result.append("\t");
+                    result.append(' ');
                 }
 
                 result.append(nodeInfo.toString());
