@@ -212,7 +212,7 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
             public boolean hasNext() {
                 //ChildCount isn't always accurate.  Nodes may get recycled depending on the vent.
                 //So we check the child count AND that the child isn't null.
-                return mNextIndex < getChildCount() && mNodeInfo.getChild(mNextIndex) != null;
+                return mNextIndex < getChildCount() && (mNodeInfo == null || mNodeInfo.getChild(mNextIndex) != null);
             }
 
             @Override
@@ -237,7 +237,7 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
             public boolean onVisit(A11yNodeInfo nodeInfo) {
 
                 for (int i = 0; i < nodeInfo.getDepthInTree(); i++) {
-                    result.append(' ');
+                    result.append('-');
                 }
 
                 result.append(nodeInfo.toString());
