@@ -190,8 +190,6 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
     }
 
     public A11yNodeInfo getParent() {
-        if (mNodeInfo == null) return null;
-
         return new A11yNodeInfo(mNodeInfo.getParent());
     }
 
@@ -252,6 +250,7 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
 
     @Override
     public String toString() {
+        if (mNodeInfo == null) throw new RuntimeException("This shouldn't be null");
         return mNodeInfo.toString();
     }
 }
