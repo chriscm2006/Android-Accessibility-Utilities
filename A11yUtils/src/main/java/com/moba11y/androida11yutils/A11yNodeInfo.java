@@ -212,7 +212,7 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
             public boolean hasNext() {
                 //ChildCount isn't always accurate.  Nodes may get recycled depending on the vent.
                 //So we check the child count AND that the child isn't null.
-                return mNextIndex < getChildCount() && getChild(mNextIndex) != null;
+                return mNextIndex < getChildCount() && mNodeInfo.getChild(mNextIndex) != null;
             }
 
             @Override
