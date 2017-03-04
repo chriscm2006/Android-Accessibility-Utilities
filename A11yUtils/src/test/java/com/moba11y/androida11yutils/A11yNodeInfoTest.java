@@ -55,7 +55,7 @@ public class A11yNodeInfoTest {
 
         rootNodeInfoMocked.addChild(new A11yNodeInfoMocked());
         rootNodeInfoMocked.addChild(new A11yNodeInfoMocked());
-        rootNodeInfoMocked.getChildAt(0).addChild(new A11yNodeInfoMocked());
+        rootNodeInfoMocked.getChild(0).addChild(new A11yNodeInfoMocked());
 
         listener.mVisitCount = 0;
         rootNodeInfoMocked.visitNodes(listener);
@@ -71,7 +71,7 @@ public class A11yNodeInfoTest {
 
         rootNodeInfoMocked.addChild(new A11yNodeInfoMocked());
 
-        Assert.assertEquals("A child node of the root node has a depth of 1", 1, rootNodeInfoMocked.getChildAt(0).getDepthInTree());
+        Assert.assertEquals("A child node of the root node has a depth of 1", 1, rootNodeInfoMocked.getChild(0).getDepthInTree());
     }
 
     @Test
@@ -84,7 +84,7 @@ public class A11yNodeInfoTest {
 
         Assert.assertEquals("The parent of a child node, is the node itself.",
                 rootNodeInfoMocked,
-                rootNodeInfoMocked.getChildAt(0).getParent());
+                rootNodeInfoMocked.getChild(0).getParent());
     }
 
     //The test belwo we include for completeness and to keep linter from complaining about a lack of tests for methods.

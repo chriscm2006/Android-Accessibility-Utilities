@@ -65,6 +65,11 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
 
     private final AccessibilityNodeInfoCompat mNodeInfo;
 
+    //A special constructor for testing.
+    A11yNodeInfo() {
+        mNodeInfo = null;
+    }
+
     public A11yNodeInfo(AccessibilityNodeInfo nodeInfo) {
         if (nodeInfo == null) throw new RuntimeException("Wrapping a null node doesn't make sense.");
         else mNodeInfo = new AccessibilityNodeInfoCompat(nodeInfo);
@@ -76,14 +81,10 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
     }
 
     public List<AccessibilityNodeInfoCompat.AccessibilityActionCompat> getActionList() {
-        if (mNodeInfo == null) return new ArrayList<>();
-
         return mNodeInfo.getActionList();
     }
 
     public int getActions() {
-        if (mNodeInfo == null) return 0;
-
         return mNodeInfo.getActions();
     }
 
@@ -152,7 +153,7 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
         return mNodeInfo.performAction(action.getAndroidValue());
     }
 
-    public A11yNodeInfo getChildAt(final int i) {
+    public A11yNodeInfo getChild(final int i) {
 
         if (i >= mNodeInfo.getChildCount()) throw new IndexOutOfBoundsException();
 
@@ -176,8 +177,6 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
      * @return The depth of the node.
      */
     public int getDepthInTree() {
-
-        if (mNodeInfo == null) return 0;
 
         int result = 0;
 
@@ -217,7 +216,7 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
 
             @Override
             public A11yNodeInfo next() {
-                return getChildAt(mCurrent++);
+                return getChild(mCurrent++);
             }
 
             @Override

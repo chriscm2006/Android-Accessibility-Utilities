@@ -21,10 +21,6 @@ class A11yNodeInfoMocked extends A11yNodeInfo {
 
     private Class<? extends View> mClass;
 
-    A11yNodeInfoMocked() {
-        super((AccessibilityNodeInfo)null);
-    }
-
     public static A11yNodeInfoMocked create() { return new A11yNodeInfoMocked();}
 
     A11yNodeInfoMocked addChild(A11yNodeInfoMocked child) {
@@ -44,7 +40,8 @@ class A11yNodeInfoMocked extends A11yNodeInfo {
     }
 
     @Override
-    public A11yNodeInfoMocked getChildAt(final int i) {
+    public A11yNodeInfoMocked getChild(final int i) {
+
         return mChildren.get(i);
     }
 
@@ -65,7 +62,7 @@ class A11yNodeInfoMocked extends A11yNodeInfo {
     }
 
     @Override
-    public A11yNodeInfo getParent() {
+    public A11yNodeInfoMocked getParent() {
         return mParent;
     }
 
