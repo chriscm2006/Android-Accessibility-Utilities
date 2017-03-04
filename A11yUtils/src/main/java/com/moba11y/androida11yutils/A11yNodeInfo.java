@@ -138,9 +138,10 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
 
         for (A11yNodeInfo child : this) {
 
-            A11yNodeInfo result = child.visitNodes(onVisitListener);
-
-            if (result != null) return result;
+            if (child != null) {
+                A11yNodeInfo result = child.visitNodes(onVisitListener);
+                if (result != null) return result;
+            }
         }
 
         return null;
@@ -174,7 +175,7 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
      * @return The depth of the node.
      */
     public int getDepthInTree() {
-        
+
         if (mNodeInfo == null) return 0;
 
         int result = 0;
