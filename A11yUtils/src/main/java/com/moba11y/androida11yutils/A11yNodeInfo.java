@@ -20,10 +20,13 @@ import java.util.List;
 public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
 
     public static A11yNodeInfo wrap(AccessibilityNodeInfo node) {
+        if (node == null) return null;
+
         return new A11yNodeInfo(node);
     }
 
     public static A11yNodeInfo wrap(AccessibilityNodeInfoCompat node) {
+        if (node == null) return null;
         return new A11yNodeInfo(node);
     }
 
@@ -70,11 +73,11 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
         mNodeInfo = null;
     }
 
-    public A11yNodeInfo(AccessibilityNodeInfo nodeInfo) {
+    private A11yNodeInfo(AccessibilityNodeInfo nodeInfo) {
         this(new AccessibilityNodeInfoCompat(nodeInfo));
     }
 
-    public A11yNodeInfo(AccessibilityNodeInfoCompat nodeInfoCompat) {
+    private A11yNodeInfo(AccessibilityNodeInfoCompat nodeInfoCompat) {
         if (nodeInfoCompat == null) throw new RuntimeException("Wrapping a null node doesn't make sense");
         mNodeInfo = nodeInfoCompat;
     }
