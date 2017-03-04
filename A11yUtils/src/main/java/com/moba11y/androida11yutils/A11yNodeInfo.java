@@ -236,7 +236,7 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
             @Override
             public boolean onVisit(A11yNodeInfo nodeInfo) {
 
-                for (int i = 1; i < nodeInfo.getDepthInTree(); i++) {
+                for (int i = 0; i < nodeInfo.getDepthInTree(); i++) {
                     result.append('-');
                 }
 
