@@ -141,11 +141,8 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
         if (onVisitListener.onVisit(this)) return this;
 
         for (A11yNodeInfo child : this) {
-
-            if (child != null) {
-                A11yNodeInfo result = child.visitNodes(onVisitListener);
-                if (result != null) return result;
-            }
+            A11yNodeInfo result = child.visitNodes(onVisitListener);
+            if (result != null) return result;
         }
 
         return null;
@@ -209,16 +206,16 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
     @Override
     public Iterator<A11yNodeInfo> iterator() {
         return new Iterator<A11yNodeInfo>() {
-            private int mCurrent;
+            private int mNextIndex = 0;
 
             @Override
             public boolean hasNext() {
-                return mCurrent < getChildCount();
+                return mNextIndex < getChildCount();
             }
 
             @Override
             public A11yNodeInfo next() {
-                return getChild(mCurrent++);
+                return getChild(mNextIndex++);
             }
 
             @Override
