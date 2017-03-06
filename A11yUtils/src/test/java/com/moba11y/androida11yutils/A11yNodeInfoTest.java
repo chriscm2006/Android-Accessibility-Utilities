@@ -98,12 +98,12 @@ public class A11yNodeInfoTest {
     //The test belwo we include for completeness and to keep linter from complaining about a lack of tests for methods.
     @Test
     public void getContentDescription() throws Exception {
-        assertTrue("Can't create realiable node info tests with Robolectric.  Testing a mocked object is silly!", true);
+        assertTrue("Can't create realiable node info tests with Robolectric and testing a mocked object is silly!", true);
     }
 
     @Test
     public void getText() throws Exception {
-        assertTrue("Can't create realiable node info tests with Robolectric.  Testing a mocked object is silly!", true);
+        assertTrue("Can't create realiable node info tests with Robolectric and testing a mocked object is silly!", true);
     }
 
     @Test
@@ -113,17 +113,17 @@ public class A11yNodeInfoTest {
 
     @Test
     public void getChildAt() throws Exception {
-        assertTrue("Can't create realiable node info tests with Robolectric.  Testing a mocked object is silly!", true);
+        assertTrue("Can't create realiable node info tests with Robolectric and esting a mocked object is silly!", true);
     }
 
     @Test
     public void getChildCount() throws Exception {
-        assertTrue("Can't create realiable node info tests with Robolectric.  Testing a mocked object is silly!", true);
+        assertTrue("Can't create realiable node info tests with Robolectric and testing a mocked object is silly!", true);
     }
 
     @Test
     public void getClassName() throws Exception {
-        assertTrue("Can't create realiable node info tests with Robolectric.  Testing a mocked object is silly!", true);
+        assertTrue("Can't create realiable node info tests with Robolectric and testing a mocked object is silly!", true);
     }
 
     @Test
