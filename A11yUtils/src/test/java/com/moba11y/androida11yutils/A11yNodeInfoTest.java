@@ -20,6 +20,14 @@ import static org.junit.Assert.*;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = com.moba11y.androida11yutils.BuildConfig.class)
 public class A11yNodeInfoTest {
+    @Test
+    public void getFirstNodeThatMatches() throws Exception {
+        A11yNodeInfoMocked rootNode = A11yNodeInfoMocked.create();
+        A11yNodeInfoMocked childNode = A11yNodeInfoMocked.create().setClass(Button.class);
+        rootNode.addChild(childNode);
+
+        assertEquals("It finds the child node.", childNode, rootNode.getFirstNodeThatMatches(new A11yNodeInfoMatcher().setClass(Button.class)));
+    }
 
     @Test
     public void isActiveElement() throws Exception {

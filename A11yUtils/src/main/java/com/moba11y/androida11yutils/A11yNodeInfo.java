@@ -1,5 +1,6 @@
 package com.moba11y.androida11yutils;
 
+import android.graphics.Rect;
 import android.os.Build;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.view.View;
@@ -152,6 +153,12 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
         return mNodeInfo.performAction(action.getAndroidValue());
     }
 
+    public Rect getBoundsInScreen() {
+        Rect result = new Rect();
+        mNodeInfo.getBoundsInScreen(result);
+        return result;
+    }
+
     public A11yNodeInfo getChild(final int i) {
 
         if (i >= mNodeInfo.getChildCount()) throw new IndexOutOfBoundsException();
@@ -197,6 +204,11 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
 
     public CharSequence getText() {
         return mNodeInfo.getText();
+    }
+
+    public String getViewIdResourceName() {
+        if (mNodeInfo.getViewIdResourceName() == null) return "";
+        return mNodeInfo.getViewIdResourceName();
     }
 
     /**
@@ -250,6 +262,15 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
         result.append("--------------- Accessibility Node Hierarchy ---------------");
 
         return result.toString();
+    }
+
+    public A11yNodeInfo getFirstNodeThatMatches(final A11yNodeInfoMatcher matcher) {
+        return visitNodes(new OnVisitListener() {
+            @Override
+            public boolean onVisit(A11yNodeInfo nodeInfo) {
+                return matcher.match(nodeInfo);
+            }
+        });
     }
 
     @Override
