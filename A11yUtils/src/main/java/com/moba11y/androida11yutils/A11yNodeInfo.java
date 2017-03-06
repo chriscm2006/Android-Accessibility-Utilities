@@ -41,7 +41,7 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
         ACTIVE_CLASSES.add(EditText.class);
     }
 
-    enum Actions {
+    public enum Actions {
 
         ACCESSIBILITY_FOCUS(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS),
         CLEAR_ACCESSIBILITY_FOCUS(AccessibilityNodeInfo.ACTION_CLEAR_ACCESSIBILITY_FOCUS),
