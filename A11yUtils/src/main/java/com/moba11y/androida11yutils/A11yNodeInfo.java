@@ -2,6 +2,7 @@ package com.moba11y.androida11yutils;
 
 import android.graphics.Rect;
 import android.os.Build;
+import android.support.v4.view.ViewPager;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.view.View;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -327,6 +328,34 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo>, Comparator<A11yNode
             }
         });
     }
+
+    public boolean isClassType(Class<?> clazz) {
+        return (clazz.getName().equalsIgnoreCase(getClassName()));
+    }
+
+    public boolean isScrollable() {
+        return mNodeInfo.isScrollable();
+    }
+
+
+    public boolean isVisibleToUser() {
+        return mNodeInfo.isVisibleToUser();
+    }
+
+    public boolean isInVisibleScrollableField() {
+        A11yNodeInfo tempNode = wrap(mNodeInfo);
+        A11yNodeInfo scrollableView = null;
+
+        while(tempNode.getParent() != null) {
+            if(tempNode.isScrollable() && !tempNode.isClassType(ViewPager.class)) {
+                scrollableView = tempNode;
+            }
+            tempNode = tempNode.getParent();
+        }
+
+        return scrollableView != null && scrollableView.isVisibleToUser();
+    }
+
 
     @Override public String toString() {
         if (mNodeInfo == null) throw new RuntimeException("This shouldn't be null");
