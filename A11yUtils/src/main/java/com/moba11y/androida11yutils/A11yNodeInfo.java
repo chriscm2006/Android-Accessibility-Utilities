@@ -72,15 +72,15 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo>, Comparator<A11yNode
     private final AccessibilityNodeInfoCompat mNodeInfo;
 
     //A special constructor for testing.
-    A11yNodeInfo() {
+    protected A11yNodeInfo() {
         mNodeInfo = null;
     }
 
-    private A11yNodeInfo(AccessibilityNodeInfo nodeInfo) {
+    protected A11yNodeInfo(AccessibilityNodeInfo nodeInfo) {
         this(new AccessibilityNodeInfoCompat(nodeInfo));
     }
 
-    private A11yNodeInfo(AccessibilityNodeInfoCompat nodeInfoCompat) {
+    protected A11yNodeInfo(AccessibilityNodeInfoCompat nodeInfoCompat) {
         if (nodeInfoCompat == null) throw new RuntimeException("Wrapping a null node doesn't make sense");
         mNodeInfo = nodeInfoCompat;
     }
@@ -218,6 +218,10 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo>, Comparator<A11yNode
         }
 
         return result;
+    }
+
+    public A11yNodeInfo getLabeledBy() {
+        return A11yNodeInfo.wrap(mNodeInfo.getLabeledBy());
     }
 
     public A11yNodeInfo getParent() {
