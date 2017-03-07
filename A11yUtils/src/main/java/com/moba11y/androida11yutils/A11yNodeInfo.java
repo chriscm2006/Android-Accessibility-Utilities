@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Switch;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
  * Created by chrismcmeeking on 2/25/17.
  */
 
-public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
+public class A11yNodeInfo implements Iterable<A11yNodeInfo>, Comparator<A11yNodeInfo> {
 
     public static A11yNodeInfo wrap(AccessibilityNodeInfo node) {
         if (node == null) return null;
@@ -83,6 +84,37 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
         mNodeInfo = nodeInfoCompat;
     }
 
+    @Override public int compare(A11yNodeInfo lhs, A11yNodeInfo rhs) {
+
+        int result;
+
+        result = lhs.getSpeakableText().compareTo(rhs.getSpeakableText());
+
+        if (result != 0) return result;
+
+        Rect lhsRect = lhs.getBoundsInScreen();
+        Rect rhsRect = rhs.getBoundsInScreen();
+
+
+        if (result != 0) return result;
+
+        if (lhsRect.top < rhsRect.top) return -1;
+        else if (lhsRect.top > rhsRect.top) return 1;
+
+        if (lhsRect.left < rhsRect.left) return -1;
+        else if (lhsRect.left > rhsRect.left) return 1;
+
+        if (lhsRect.right < rhsRect.right) return -1;
+        else if (lhsRect.right > rhsRect.right) return 1;
+
+        if (lhsRect.bottom < rhsRect.bottom) return -1;
+        else if (lhsRect.bottom > rhsRect.bottom) return 1;
+
+        if (result != 0) return result;
+
+        return 0;
+    }
+
     public List<AccessibilityNodeInfoCompat.AccessibilityActionCompat> getActionList() {
         return mNodeInfo.getActionList();
     }
@@ -126,29 +158,6 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
                 (actions & AccessibilityNodeInfo.ACTION_SELECT) != 0;
     }
 
-    /**
-     * Loop over elements in the list, until one of them returns true.  Return the
-     * first element where "onVisit" returns true.  This can be used to create a very
-     * simple "find first" type of method.  Though most of the time, you likely want
-     * to travel all, in which case, just return "false" from your onVisit method, and
-     * you will visit every node.
-     * @param onVisitListener {@link A11yNodeInfo.OnVisitListener#onVisit(A11yNodeInfo) onVisit}
-     * will be alled for every node, until {@link A11yNodeInfo.OnVisitListener#onVisit(A11yNodeInfo) onVisit}
-     * returns true.
-     * @return The first node for which {@link A11yNodeInfo.OnVisitListener#onVisit(A11yNodeInfo) onVisit}  returns true.
-     */
-    public A11yNodeInfo visitNodes(OnVisitListener onVisitListener) {
-
-        if (onVisitListener.onVisit(this)) return this;
-
-        for (A11yNodeInfo child : this) {
-            A11yNodeInfo result = child.visitNodes(onVisitListener);
-            if (result != null) return result;
-        }
-
-        return null;
-    }
-
     public boolean performAction(Actions action) {
         return mNodeInfo.performAction(action.getAndroidValue());
     }
@@ -179,6 +188,16 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
     }
 
     /**
+     * I don't often use CharSequence's, and prefer strings.  Note: null strings will return as empty strings!
+     * @return The content descriptiong as a NotNull String.
+     */
+    public String getContentDescriptionAsString() {
+        if (mNodeInfo.getContentDescription() == null) return "";
+
+        return mNodeInfo.getContentDescription().toString();
+    }
+
+    /**
      * Gets the depth of the child in the node info heirarchy.
      * @return The depth of the node.
      */
@@ -202,8 +221,32 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
         return new A11yNodeInfo(mNodeInfo.getParent());
     }
 
+    /**
+     * Attempts to calculate the string that will be read off by TalkBack for a given
+     * accessibility node.  Eventually including role, trait, and value information.
+     * If null, returns an empty string instead.
+     *
+     * @return The string representing the spoken text.
+     */
+    public String getSpeakableText() {
+        //Todo: Use Eyes Free project???  Or make this more advanced.
+        if (getContentDescription() != null) return getContentDescriptionAsString();
+        if (getText() != null) return getTextAsString();
+        return "";
+    }
+
     public CharSequence getText() {
         return mNodeInfo.getText();
+    }
+
+    /**
+     * Don't like CharSequences, and random null string checks.  This will get the Text
+     * as a NotNull String.
+     * @return The text as a NotNull String.
+     */
+    public String getTextAsString() {
+        if (getText() != null) return getText().toString();
+        else return "";
     }
 
     public String getViewIdResourceName() {
@@ -215,8 +258,7 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
      * Implenting the iterable interface to more easily navigate the node infos children.
      * @return An itarator over the children of this A11yNodeInfo.
      */
-    @Override
-    public Iterator<A11yNodeInfo> iterator() {
+    @Override public Iterator<A11yNodeInfo> iterator() {
         return new Iterator<A11yNodeInfo>() {
             private int mNextIndex = 0;
 
@@ -239,6 +281,10 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
         };
     }
 
+    /**
+     * Get the entire node heirarchy as a string.
+     * @return The node heirarchy.
+     */
     public String toViewHeirarchy() {
         final StringBuilder result = new StringBuilder();
 
@@ -264,6 +310,11 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
         return result.toString();
     }
 
+    /**
+     * Get the first {@link A11yNodeInfo node} that matches the given {@link A11yNodeInfoMatcher matcher}
+     * @param matcher The matcher with props to match.
+     * @return The first node that matches.
+     */
     public A11yNodeInfo getFirstNodeThatMatches(final A11yNodeInfoMatcher matcher) {
         return visitNodes(new OnVisitListener() {
             @Override
@@ -273,9 +324,31 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo> {
         });
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         if (mNodeInfo == null) throw new RuntimeException("This shouldn't be null");
         return mNodeInfo.toString();
+    }
+
+    /**
+     * Loop over children in the node heirarchy, until one of them returns true.  Return the
+     * first element where "onVisit" returns true.  This can be used to create a very
+     * simple "find first" type of method.  Though most of the time, you likely want
+     * to travel all, in which case, just return "false" from your onVisit method, and
+     * you will visit every node.
+     * @param onVisitListener {@link A11yNodeInfo.OnVisitListener#onVisit(A11yNodeInfo) onVisit}
+     * will be alled for every node, until {@link A11yNodeInfo.OnVisitListener#onVisit(A11yNodeInfo) onVisit}
+     * returns true.
+     * @return The first node for which {@link A11yNodeInfo.OnVisitListener#onVisit(A11yNodeInfo) onVisit}  returns true.
+     */
+    public A11yNodeInfo visitNodes(OnVisitListener onVisitListener) {
+
+        if (onVisitListener.onVisit(this)) return this;
+
+        for (A11yNodeInfo child : this) {
+            A11yNodeInfo result = child.visitNodes(onVisitListener);
+            if (result != null) return result;
+        }
+
+        return null;
     }
 }
