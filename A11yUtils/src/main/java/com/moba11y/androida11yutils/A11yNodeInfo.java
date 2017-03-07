@@ -162,6 +162,10 @@ public class A11yNodeInfo implements Iterable<A11yNodeInfo>, Comparator<A11yNode
         return mNodeInfo.performAction(action.getAndroidValue());
     }
 
+    public AccessibilityNodeInfoCompat getAccessibilityNodeInfoCompat() {
+        return mNodeInfo;
+    }
+
     public Rect getBoundsInScreen() {
         Rect result = new Rect();
         mNodeInfo.getBoundsInScreen(result);
